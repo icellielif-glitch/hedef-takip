@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Bugünlük</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body{font-family:Arial;margin:0;padding:20px;background:linear-gradient(to right,#5bbcb3,#f7d4e3);color:#333}
+    h1,h2{text-align:center;color:#2b3a42}
+    .container{display:flex;flex-wrap:wrap;justify-content:space-around}
+    .box{background:#fff;border-radius:15px;padding:20px;margin:10px;flex:1 1 300px;box-shadow:0 4px 10px rgba(0,0,0,0.1)}
+    .task{margin:10px 0;display:flex;justify-content:space-between;align-items:center}
+    .progress-bar{width:100%;background:#e0e0e0;border-radius:10px;overflow:hidden;margin:10px 0}
+    .progress{height:20px;background:#3a9992;width:0%;transition:width .3s}
+    button{background:#5bbcb3;color:#fff;border:none;padding:6px 10px;border-radius:6px;cursor:pointer}
+    button:hover{background:#489b93}
+  </style>
+</head>
+<body>
+  <h1>🎯 Bugünlük</h1>
+  <div class="container">
+    <div class="box">
+      <h2>📌 Görevler</h2>
+      <div class="task"><span>10 sayfa kitap oku (+5p)</span><button onclick="eklePuan(5)">➕</button></div>
+      <div class="task"><span>15 dk ders çalış (+10p)</span><button onclick="eklePuan(10)">➕</button></div>
+      <div class="task"><span>5 dk egzersiz (+5p)</span><button onclick="eklePuan(5)">➕</button></div>
+      <div class="task"><span>Odayı topla (+10p)</span><button onclick="eklePuan(10)">➕</button></div>
+      <h3>Bugünkü Puan: <span id="puan">0</span></h3>
+      <div class="progress-bar"><div class="progress" id="bar"></div></div>
+      <button onclick="sifirla()">🔄 Puanları Sıfırla</button>
+    </div>
+    <div class="box">
+      <h2>🎁 Ödüller</h2>
+      <div>📺 100 puan → 1 bölüm dizi</div>
+      <div>🎮 300 puan → Nintendo’da yeni oyun</div>
+      <div>🎬 500 puan → Film gecesi</div>
+      <h3>Toplam Puan: <span id="toplam">0</span></h3>
+    </div>
+  </div>
+  <script>
+    let bugunkuPuan=0, toplamPuan=+localStorage.getItem("toplamPuan")||0;
+    document.getElementById("toplam").textContent=toplamPuan;
+    function eklePuan(p){bugunkuPuan+=p;toplamPuan+=p;
+      document.getElementById("puan").textContent=bugunkuPuan;
+      document.getElementById("toplam").textContent=toplamPuan;
+      localStorage.setItem("toplamPuan",toplamPuan);updateBar()}
+    function sifirla(){bugunkuPuan=0;toplamPuan=0;
+      document.getElementById("puan").textContent=0;
+      document.getElementById("toplam").textContent=0;
+      localStorage.setItem("toplamPuan",0);updateBar()}
+    function updateBar(){
+      document.getElementById("bar").style.width=Math.min((toplamPuan%500)/5,100)+"%";
+    }
+    updateBar();
+  </script>
+</body>
+</html>
